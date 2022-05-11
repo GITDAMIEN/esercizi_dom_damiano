@@ -11,16 +11,16 @@ let wrapper = document.querySelector("#wrapper");
 let open = false;
 
 wrapper.innerHTML = `
-<div class="col-12">
-<p>Paragrafo</p>
-</div>
-<div class="col-12">
-<p>Paragrafo</p>
-</div>
-<div class="col-12">
-<p>Paragrafo</p>
-</div>
-`;
+    <div class="col-12">
+    <p>Paragrafo</p>
+    </div>
+    <div class="col-12">
+    <p>Paragrafo</p>
+    </div>
+    <div class="col-12">
+    <p>Paragrafo</p>
+    </div>
+    `;
 
 let p = document.querySelectorAll("p");
 
@@ -49,7 +49,7 @@ showHideBtn.addEventListener('click', ()=> {
 
 paragraphColorBtn.addEventListener('click', ()=> {
 
-    p.forEach((element)=> element.style.color = `rgb(${Math.floor(Math.random() * (255 - 0 + 1) + 0)},${Math.floor(Math.random() * (255 - 0 + 1) + 0)},${Math.floor(Math.random() * (255 - 0 + 1) + 0)}`);
+    p.forEach((element)=> element.style.color = `rgb(${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)},${Math.floor(Math.random() * 256)}`);
 })
 
 boldToggleBtn.addEventListener('click', ()=> {
