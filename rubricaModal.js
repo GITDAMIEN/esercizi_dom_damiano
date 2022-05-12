@@ -3,6 +3,7 @@
 let show = false;
 let removed = false;
 let searchedContacts;
+let removeContactIndex;
 
 // Wrapper
 let contactsWrapper = document.querySelector('#contactsWrapper');
@@ -12,10 +13,20 @@ let showContactsBtn = document.querySelector('#showContactsBtn');
 let addContactBtn = document.querySelector('#addContactBtn');
 let removeContactBtn = document.querySelector('#removeContactBtn');
 let searchContactBtn = document.querySelector('#searchContactBtn');
+let confirmRemovalBtn = document.querySelector('#confirmRemovalBtn');
+let cancelBtn = document.querySelector('#cancelBtn');
+
 
 // Inputs
 let nameInput = document.querySelector('#nameInput');
 let numberInput = document.querySelector('#numberInput');
+
+//body
+let body = document.querySelector('#bodyElement');
+
+//Modal
+let exampleModal = document.querySelector('#exampleModal');
+let backdropFade = document.querySelector('#backdropFade');
 
 // Rubrica
 let contacts = {
@@ -60,34 +71,12 @@ let contacts = {
             alert('Contatto già presente in rubrica')
         }
     },
-
-    removeContact : function(nameToRemove, numberToRemove){
-
-        let filtered, index;
-
-        if(numberToRemove!=''){  //cerca per numero
-            filtered = this.contactList.filter((contact)=>contact.contactNumber == numberToRemove)[0];
-            index=this.contactList.indexOf(filtered);
-        }
-        else {  //cerca per nome
-            filtered = this.contactList.filter((contact)=>contact.contactName.toLowerCase() == nameToRemove.toLowerCase())[0];
-            index=this.contactList.indexOf(filtered);
-        }
-
-        if(index>=0){
-            this.contactList.splice(index, 1);
-            alert('Contatto rimosso correttamente')
-            removed=true;
-        }
-        else
-            alert('Contatto non presente in rubrica')
-    },
-
+    
     searchContact : function(nameToSearch, numberToSearch){
-
+        
         if(numberToSearch!=''){  //cerca per numero
             searchedContacts=this.contactList.filter((contact)=>
-                contact.contactNumber==numberToSearch)
+            contact.contactNumber==numberToSearch)
             if(searchedContacts.length>0){
                 contactsWrapper.innerHTML= '';
                 show=false;
@@ -97,10 +86,10 @@ let contacts = {
             }else{
                 alert('Contatto non presente in rubrica')
             }
-
+            
         }else if(nameToSearch!=''){  //cerca per nome
             searchedContacts=this.contactList.filter((contact)=>
-                contact.contactName.toLowerCase()==nameToSearch.toLowerCase())
+            contact.contactName.toLowerCase()==nameToSearch.toLowerCase())
             if(searchedContacts.length>0){
                 if(searchedContacts.length>1){
                     alert('Ho trovato i seguenti contatti')
@@ -112,15 +101,80 @@ let contacts = {
                 show=false;
                 showContactsBtn.innerHTML='Mostra contatti'; 
                 contacts.showContacts(searchedContacts);
-
+                
             }else{
                 alert('Contatto non presente in rubrica')
             }
-
+            
         }else{
             alert('Devi inserire un nome o un numero')
         }
-            
+        
+    },
+
+    removeContact : function(nameToRemove, numberToRemove){
+
+        let filtered;
+
+        if(numberToRemove!=''){  //cerca per numero
+            filtered = this.contactList.filter((contact)=>contact.contactNumber == numberToRemove)[0];
+            removeContactIndex=this.contactList.indexOf(filtered);
+        }
+        else {  //cerca per nome
+            filtered = this.contactList.filter((contact)=>contact.contactName.toLowerCase() == nameToRemove.toLowerCase())[0];
+            removeContactIndex=this.contactList.indexOf(filtered);
+        }
+
+        if(removeContactIndex>=0){
+            contacts.removeConfirmationModal(removeContactIndex)
+            // this.contactList.splice(index, 1);
+            // alert('Contatto rimosso correttamente')
+            // removed=true;
+        }
+        else
+            alert('Contatto non presente in rubrica')
+    },
+    
+    removeConfirmationModal : function(removeContactIndex){
+        body.classList.add('modal-open');
+        body.style.overflow='hidden';
+        body.style.paddingRight= '0px';
+        exampleModal.style.display='block';
+        exampleModal.ariaModal="true";
+        exampleModal.role='dialog';
+        exampleModal.classList.add('show');
+        backdropFade.style.display='block';
+
+        cancelBtn.addEventListener('click',()=>{
+            exampleModal.style.display = 'none'
+            exampleModal.setAttribute('aria-hidden', true)
+            exampleModal.removeAttribute('aria-modal')
+            exampleModal.removeAttribute('role')
+            exampleModal._isTransitioning = false
+            exampleModal._backdrop.hide(() => {
+                document.body.classList.remove(CLASS_NAME_OPEN)
+                exampleModal._resetAdjustments()
+                exampleModal._scrollBar.reset()
+                EventHandler.trigger(exampleModal, EVENT_HIDDEN)
+            })
+            backdropFade.classList.remove('show');
+            exampleModal.classList.remove('show');
+            exampleModal.classList.remove('fade');
+            backdropFade.style.display='none';
+            body.classList.remove('modal-open');
+            body.style.overflow='none';
+            body.style.paddingRight= '';
+
+        })
+
+        confirmRemovalBtn.addEventListener('click', ()=>{
+            this.contactList.splice(removeContactIndex, 1);
+            alert('Contatto rimosso correttamente')
+            removed=true;
+            body.classList.remove('modal-open');
+
+        })
+        
     }
 }    
 
