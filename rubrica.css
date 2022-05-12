@@ -1,0 +1,55 @@
+:root {
+    --matrixg: rgb(66, 201, 32);
+    --matrixb: rgba(0, 0, 0, 0.93);
+}
+
+body{
+    background-color: var(--matrixb);
+}
+
+h1{
+    font-size: 50px;
+    font-weight: 600;
+    letter-spacing: 3px;
+}
+
+p{
+    margin: 0px;
+    padding: 0px;
+}
+
+.matrixg{
+    color: var(--matrixg);
+    font-family: 'Varela Round', sans-serif;
+}
+
+.btn-outline-custom{
+    background-color: transparent;
+    border-radius: 10px;
+    color: var(--matrixg);
+    box-shadow: 1px 1px 5px var(--matrixg);
+    transition: 1s;
+}
+
+.btn:focus {
+    box-shadow: 1px 1px 5px var(--matrixg);
+}
+
+.btn-outline-custom:hover{
+    background-color: var(--matrixg);
+    transform: scale(1.2);
+}
+
+.cardPersonalized{
+    border-radius: 10px;
+    color: var(--matrixg);
+    box-shadow: 1px 1px 5px var(--matrixg);
+    height: 60px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
