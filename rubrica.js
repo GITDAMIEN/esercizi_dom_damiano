@@ -15,7 +15,7 @@ let removeContactBtn = document.querySelector('#removeContactBtn');
 let searchContactBtn = document.querySelector('#searchContactBtn');
 let confirmRemovalBtn = document.querySelector('#confirmRemovalBtn');
 let cancelBtn = document.querySelector('#cancelBtn');
-
+let trashes;
 
 // Inputs
 let nameInput = document.querySelector('#nameInput');
@@ -25,7 +25,7 @@ let numberInput = document.querySelector('#numberInput');
 let body = document.querySelector('#bodyElement');
 
 //Modal
-let exampleModal = document.querySelector('#exampleModal');
+let removeModal = document.querySelector('#removeModal');
 let backdropFade = document.querySelector('#backdropFade');
 
 // Rubrica
@@ -52,10 +52,20 @@ let contacts = {
                 <div class="cardPersonalized">
                     <p>${contact.contactName}</p>
                     <p>${contact.contactNumber}</p>
+                    <i class="fa-solid fa-trash matrig"></i>
                 </div>    
             `;    
             contactsWrapper.appendChild(div);
         })    
+        trashes = document.querySelectorAll('.fa-trash');
+
+        trashes.forEach((trash,i)=>{
+            trash.addEventListener('click', ()=>{
+                let trashing = contacts.contactList[i].contactNumber;
+                contacts.removeContact('',trashing);
+            })
+        })
+
     },
 
     addContact : function(newName, newNumber){
@@ -139,27 +149,27 @@ let contacts = {
         body.classList.add('modal-open');
         body.style.overflow='hidden';
         body.style.paddingRight= '0px';
-        exampleModal.style.display='block';
-        exampleModal.ariaModal="true";
-        exampleModal.role='dialog';
-        exampleModal.classList.add('show');
+        removeModal.style.display='block';
+        removeModal.ariaModal="true";
+        removeModal.role='dialog';
+        removeModal.classList.add('show');
         backdropFade.style.display='block';
 
         cancelBtn.addEventListener('click',()=>{
-            exampleModal.style.display = 'none'
-            exampleModal.setAttribute('aria-hidden', true)
-            exampleModal.removeAttribute('aria-modal')
-            exampleModal.removeAttribute('role')
-            exampleModal._isTransitioning = false
-            exampleModal._backdrop.hide(() => {
+            removeModal.style.display = 'none'
+            removeModal.setAttribute('aria-hidden', true)
+            removeModal.removeAttribute('aria-modal')
+            removeModal.removeAttribute('role')
+            removeModal._isTransitioning = false
+            removeModal._backdrop.hide(() => {
                 document.body.classList.remove(CLASS_NAME_OPEN)
-                exampleModal._resetAdjustments()
-                exampleModal._scrollBar.reset()
-                EventHandler.trigger(exampleModal, EVENT_HIDDEN)
+                removeModal._resetAdjustments()
+                removeModal._scrollBar.reset()
+                EventHandler.trigger(removeModal, EVENT_HIDDEN)
             })
             backdropFade.classList.remove('show');
-            exampleModal.classList.remove('show');
-            exampleModal.classList.remove('fade');
+            removeModal.classList.remove('show');
+            removeModal.classList.remove('fade');
             backdropFade.style.display='none';
             body.classList.remove('modal-open');
             body.style.overflow='none';
@@ -172,7 +182,6 @@ let contacts = {
             alert('Contatto rimosso correttamente')
             removed=true;
             body.classList.remove('modal-open');
-
         })
         
     }

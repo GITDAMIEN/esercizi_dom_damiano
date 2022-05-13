@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
 
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Mio CSS -->
     <link rel="stylesheet" href="./rubrica.css">
     <title>Rubrica</title>
@@ -24,7 +27,7 @@
             <h1 class="matrixg">La mia rubrica</h1>
         </div>
         
-          <!-- Inputs -->
+        <!-- Inputs -->
         <div class="container mt-3">
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
@@ -66,14 +69,14 @@
         
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#removeModal">
         Launch demo modal
-    </button>
+    </button> -->
     
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none">
+    <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none">
         <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content modal-content-custom">
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Rimozione contatto</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -82,8 +85,8 @@
             Stai per eliminare questo contatto. Vuoi procedere?
             </div>
             <div class="modal-footer">
-            <button id="cancelBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-            <button id="confirmRemovalBtn" type="button" class="btn btn-primary">Elimina contatto</button>
+            <button id="cancelBtn" type="button" class="btn matrixg btn-outline-custom" data-bs-dismiss="modal">Annulla</button>
+            <button id="confirmRemovalBtn" type="button" class="btn matrixg btn-outline-custom">Elimina contatto</button>
             </div>
         </div>
         </div>
