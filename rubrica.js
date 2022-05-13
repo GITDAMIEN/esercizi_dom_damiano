@@ -46,6 +46,7 @@ let contacts = {
        {contactName : 'Sofia' , contactNumber : 6666666666},
        {contactName : 'Carlo' , contactNumber : 7777777777},
        {contactName : 'Marco' , contactNumber : 8888888888},
+       {contactName : 'Filippo' , contactNumber : 9999999999},
     ],
 
     showContacts : function(array){
@@ -310,19 +311,23 @@ addContactBtn.addEventListener('click', ()=>{
 
     if(nameInput.value!=''&&numberInput.value!=''){
 
-        if(!shown){
-            contacts.addContact(nameInput.value, numberInput.value);
-            contacts.showContacts(contacts.contactList)
-            showContactsBtn.innerHTML='Nascondi contatti'
-            shown=true;
-        }else{
-            contactsWrapper.innerHTML='';
-            contacts.addContact(nameInput.value ,numberInput.value);
-            contacts.showContacts(contacts.contactList)
+        if(numberInput.value.length==10){
+            if(!shown){
+                contacts.addContact(nameInput.value, numberInput.value);
+                contacts.showContacts(contacts.contactList)
+                showContactsBtn.innerHTML='Nascondi contatti'
+                shown=true;
+            }else{
+                contactsWrapper.innerHTML='';
+                contacts.addContact(nameInput.value ,numberInput.value);
+                contacts.showContacts(contacts.contactList)
+            }
+            
+            nameInput.value ='';
+            numberInput.value ='';
         }
-        
-        nameInput.value ='';
-        numberInput.value ='';
+        else
+            alert('Il numero deve avere 10 cifre')
 
     }else if(nameInput.value!=''&&numberInput.value==''){
         alert('Devi inserire anche un numero')
