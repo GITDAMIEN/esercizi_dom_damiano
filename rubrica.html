@@ -69,24 +69,45 @@
         
 
     <!-- Button trigger modal -->
-    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#removeModal">
+    <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chooseContactModal">
         Launch demo modal
     </button> -->
     
-    <!-- Modal -->
-    <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none">
+    <!-- removeContactModal -->
+    <div class="modal fade" id="removeContactModal" tabindex="-1" aria-labelledby="removeContactModalLabel" aria-hidden="true" style="display: none">
         <div class="modal-dialog">
         <div class="modal-content modal-content-custom">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Rimozione contatto</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="removeContactModalLabel">Rimozione contatto</h5>
+                <button id="removeContactModalCloseBtn" type="button" class="btn-close matrixg btn-close-outline-custom" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            Stai per eliminare questo contatto. Vuoi procedere?
+                Stai per eliminare questo contatto. Vuoi procedere?
             </div>
             <div class="modal-footer">
-            <button id="cancelBtn" type="button" class="btn matrixg btn-outline-custom" data-bs-dismiss="modal">Annulla</button>
-            <button id="confirmRemovalBtn" type="button" class="btn matrixg btn-outline-custom">Elimina contatto</button>
+                <button id="cancelBtn" type="button" class="btn matrixg btn-outline-custom" data-bs-dismiss="modal">Annulla</button>
+                <button id="confirmRemovalBtn" type="button" class="btn matrixg btn-outline-custom">Elimina contatto</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- chooseContactModal -->
+    <div class="modal fade" id="chooseContactModal" tabindex="-1" aria-labelledby="chooseContactModalLabel" aria-hidden="true" style="display: none">
+        <div class="modal-dialog">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chooseContactModalLabel">Scegli contatto da rimuovere</h5>
+                <button id="chooseContactModalCloseBtn" type="button" class="btn-close matrixg btn-close-outline-custom" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Ho trovato più di un contatto con questo nome.
+                <br>
+                Quale vuoi rimuovere?
+            </div>
+            <div id="chooseContactModalFooter" class="modal-footer">
+                <div id="contactsContainerInModal">
+                </div>
             </div>
         </div>
         </div>

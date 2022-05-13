@@ -1,7 +1,6 @@
 
 // Variabili
-let show = false;
-let removed = false;
+let shown = false;
 let searchedContacts;
 let removeContactIndex;
 
@@ -15,6 +14,8 @@ let removeContactBtn = document.querySelector('#removeContactBtn');
 let searchContactBtn = document.querySelector('#searchContactBtn');
 let confirmRemovalBtn = document.querySelector('#confirmRemovalBtn');
 let cancelBtn = document.querySelector('#cancelBtn');
+let removeContactModalCloseBtn = document.querySelector('#removeContactModalCloseBtn');
+let chooseContactModalCloseBtn = document.querySelector('#chooseContactModalCloseBtn');
 let trashes;
 
 // Inputs
@@ -24,9 +25,14 @@ let numberInput = document.querySelector('#numberInput');
 //body
 let body = document.querySelector('#bodyElement');
 
-//Modal
-let removeModal = document.querySelector('#removeModal');
+//removeContactModal
+let removeContactModal = document.querySelector('#removeContactModal');
 let backdropFade = document.querySelector('#backdropFade');
+
+//chooseContactModal
+let chooseContactModal = document.querySelector('#chooseContactModal');
+let chooseContactModalFooter = document.querySelector('#chooseContactModalFooter');
+let contactsContainerInModal = document.querySelector('#contactsContainerInModal')
 
 // Rubrica
 let contacts = {
@@ -43,7 +49,7 @@ let contacts = {
     ],
 
     showContacts : function(array){
-        contactsWrapper.innerHTML='';   //aggiunta da verificare
+        contactsWrapper.innerHTML='';
 
         array.forEach((contact)=>{
             let div = document.createElement('div')
@@ -89,7 +95,7 @@ let contacts = {
             contact.contactNumber==numberToSearch)
             if(searchedContacts.length>0){
                 contactsWrapper.innerHTML= '';
-                show=false;
+                shown=false;
                 showContactsBtn.innerHTML='Mostra contatti'; 
                 contacts.showContacts(searchedContacts);
                 alert('Contatto trovato');
@@ -108,7 +114,7 @@ let contacts = {
                     alert('Contatto trovato')
                 }
                 contactsWrapper.innerHTML= '';
-                show=false;
+                shown=false;
                 showContactsBtn.innerHTML='Mostra contatti'; 
                 contacts.showContacts(searchedContacts);
                 
@@ -129,73 +135,172 @@ let contacts = {
         if(numberToRemove!=''){  //cerca per numero
             filtered = this.contactList.filter((contact)=>contact.contactNumber == numberToRemove)[0];
             removeContactIndex=this.contactList.indexOf(filtered);
+
+            if(removeContactIndex>=0){
+                // contacts.removeConfirmationModal(removeContactIndex)
+                this.contactList.splice(removeContactIndex, 1);
+                alert('Contatto rimosso correttamente')
+    
+                if(shown)
+                    contactsWrapper.innerHTML='';
+                contacts.showContacts(contacts.contactList)
+                showContactsBtn.innerHTML='Nascondi contatti'
+                shown=true;
+            }
+            else
+                alert('Contatto non presente in rubrica')
+
         }
         else {  //cerca per nome
-            filtered = this.contactList.filter((contact)=>contact.contactName.toLowerCase() == nameToRemove.toLowerCase())[0];
-            removeContactIndex=this.contactList.indexOf(filtered);
+            filtered = this.contactList.filter((contact)=>contact.contactName.toLowerCase() == nameToRemove.toLowerCase());
+            // console.log(filtered);
+
+            if(filtered.length>1){ //se trovi più omonimie
+                contacts.chooseContactToRemoveModal(filtered)
+            }
+            else if(filtered.length==1){ //se trovi solo 1 corrispondenza
+                // contacts.removeConfirmationModal(//)
+                removeContactIndex=this.contactList.indexOf(filtered[0]);
+
+                this.contactList.splice(removeContactIndex, 1);
+                alert('Contatto rimosso correttamente')
+
+                if(shown)
+                    contactsWrapper.innerHTML='';
+                contacts.showContacts(contacts.contactList)
+                showContactsBtn.innerHTML='Nascondi contatti'
+                shown=true;
+            }
+            else //se non ne trovi
+                alert('Contatto non presente in rubrica')
+
         }
 
-        if(removeContactIndex>=0){
-            contacts.removeConfirmationModal(removeContactIndex)
-            // this.contactList.splice(index, 1);
-            // alert('Contatto rimosso correttamente')
-            // removed=true;
-        }
-        else
-            alert('Contatto non presente in rubrica')
     },
     
+    //metodo per l'apertura del modale che richiede conferma di cancellazione contatto
+    //il modale però sballa tutto e interferisce sulla cancellazione dei contatti
     removeConfirmationModal : function(removeContactIndex){
         body.classList.add('modal-open');
         body.style.overflow='hidden';
         body.style.paddingRight= '0px';
-        removeModal.style.display='block';
-        removeModal.ariaModal="true";
-        removeModal.role='dialog';
-        removeModal.classList.add('show');
+        removeContactModal.style.display='block';
+        removeContactModal.role='dialog';
+        removeContactModal.classList.add('show');
         backdropFade.style.display='block';
 
         cancelBtn.addEventListener('click',()=>{
-            removeModal.style.display = 'none'
-            removeModal.setAttribute('aria-hidden', true)
-            removeModal.removeAttribute('aria-modal')
-            removeModal.removeAttribute('role')
-            removeModal._isTransitioning = false
-            removeModal._backdrop.hide(() => {
-                document.body.classList.remove(CLASS_NAME_OPEN)
-                removeModal._resetAdjustments()
-                removeModal._scrollBar.reset()
-                EventHandler.trigger(removeModal, EVENT_HIDDEN)
-            })
-            backdropFade.classList.remove('show');
-            removeModal.classList.remove('show');
-            removeModal.classList.remove('fade');
+            removeContactModal.style.display = 'none'
+            removeContactModal.removeAttribute('role')
+            removeContactModal.classList.remove('show');
             backdropFade.style.display='none';
-            body.classList.remove('modal-open');
             body.style.overflow='none';
             body.style.paddingRight= '';
+            body.classList.remove('modal-open');
+        })
 
+        removeContactModalCloseBtn.addEventListener('click',()=>{
+            removeContactModal.style.display = 'none'
+            removeContactModal.removeAttribute('role')
+            removeContactModal.classList.remove('show');
+            backdropFade.style.display='none';
+            body.style.overflow='none';
+            body.style.paddingRight= '';
+            body.classList.remove('modal-open');
         })
 
         confirmRemovalBtn.addEventListener('click', ()=>{
-            this.contactList.splice(removeContactIndex, 1);
-            alert('Contatto rimosso correttamente')
-            removed=true;
+            removeContactModal.style.display = 'none'
+            removeContactModal.removeAttribute('role')
+            removeContactModal.classList.remove('show');
+            backdropFade.style.display='none';
+            body.style.overflow='none';
+            body.style.paddingRight= '';
             body.classList.remove('modal-open');
+
+            // this.contactList.splice(removeContactIndex, 1);
+            // alert('Contatto rimosso correttamente')
+
+            // if(shown)
+            //     contactsWrapper.innerHTML='';
+            // contacts.showContacts(contacts.contactList)
+            // showContactsBtn.innerHTML='Nascondi contatti'
+            // shown=true;
         })
         
+    },
+
+    chooseContactToRemoveModal : function(arrayOfContacts){
+        body.classList.add('modal-open');
+        body.style.overflow='hidden';
+        body.style.paddingRight= '0px';
+        chooseContactModal.style.display='block';
+        chooseContactModal.role='dialog';
+        chooseContactModal.classList.add('show');
+        backdropFade.style.display='block';
+
+        let arrayOfButtons = [];
+        let dataArray = [];
+        contactsContainerInModal.innerHTML='';
+
+        arrayOfContacts.forEach((contact, i)=>{
+            let contactButton = document.createElement('button')
+            contactButton.setAttribute('id',`contact${i}Btn`)
+            contactButton.setAttribute('type',`button`)
+            contactButton.classList.add('btn', 'matrixg', 'btn-outline-custom', 'my-2')
+            contactButton.innerHTML=`Elimina ${contact.contactName} con numero ${contact.contactNumber}`
+            contactsContainerInModal.appendChild(contactButton)
+
+            arrayOfButtons.push(document.querySelector(`#contact${i}Btn`))
+            dataArray.push(contact)
+
+            arrayOfButtons[i].addEventListener('click', ()=>{
+                let eliminateIndex = contacts.contactList.indexOf(dataArray[i])
+                contacts.contactList.splice(eliminateIndex, 1);
+                alert('Contatto rimosso correttamente')
+
+                if(shown)
+                    contactsWrapper.innerHTML='';
+                contacts.showContacts(contacts.contactList)
+                showContactsBtn.innerHTML='Nascondi contatti'
+                shown=true;
+
+                chooseContactModal.style.display = 'none'
+                chooseContactModal.removeAttribute('role')
+                chooseContactModal.classList.remove('show');
+                backdropFade.style.display='none';
+                body.style.overflow='none';
+                body.style.paddingRight= '';
+                body.classList.remove('modal-open');
+            })
+        })
+
+        chooseContactModalCloseBtn.addEventListener('click',()=>{
+            chooseContactModal.style.display = 'none'
+            chooseContactModal.removeAttribute('role')
+            chooseContactModal.classList.remove('show');
+            backdropFade.style.display='none';
+            body.style.overflow='none';
+            body.style.paddingRight= '';
+            body.classList.remove('modal-open');
+
+            arrayOfButtons = []
+            dataArray = [];
+        })
+
     }
+
 }    
 
 //Event Listeners
 showContactsBtn.addEventListener('click', ()=>{
-    if(!show){
+    if(!shown){
         contacts.showContacts(contacts.contactList)
         showContactsBtn.innerHTML='Nascondi contatti'
-        show=true;
+        shown=true;
     }else{
         contactsWrapper.innerHTML= '';
-        show=false;
+        shown=false;
         showContactsBtn.innerHTML='Mostra contatti'
     }
 
@@ -205,11 +310,11 @@ addContactBtn.addEventListener('click', ()=>{
 
     if(nameInput.value!=''&&numberInput.value!=''){
 
-        if(!show){
+        if(!shown){
             contacts.addContact(nameInput.value, numberInput.value);
             contacts.showContacts(contacts.contactList)
             showContactsBtn.innerHTML='Nascondi contatti'
-            show=true;
+            shown=true;
         }else{
             contactsWrapper.innerHTML='';
             contacts.addContact(nameInput.value ,numberInput.value);
@@ -237,14 +342,6 @@ removeContactBtn.addEventListener('click', ()=>{
 
         contacts.removeContact(nameInput.value,numberInput.value)
         
-        if(removed){
-            if(show)
-                contactsWrapper.innerHTML='';
-            contacts.showContacts(contacts.contactList)
-            showContactsBtn.innerHTML='Nascondi contatti'
-            show=true;
-            removed=false;
-        }
     }
 
 })
@@ -260,3 +357,6 @@ searchContactBtn.addEventListener('click', ()=>{
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+
+// contacts.chooseContactToRemoveModal(contacts.contactList)
