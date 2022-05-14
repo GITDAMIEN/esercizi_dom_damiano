@@ -141,6 +141,9 @@ let contacts = {
                 // contacts.removeConfirmationModal(removeContactIndex)
                 this.contactList.splice(removeContactIndex, 1);
                 alert('Contatto rimosso correttamente')
+
+                nameInput.value ='';
+                numberInput.value ='';
     
                 if(shown)
                     contactsWrapper.innerHTML='';
@@ -165,6 +168,9 @@ let contacts = {
 
                 this.contactList.splice(removeContactIndex, 1);
                 alert('Contatto rimosso correttamente')
+
+                nameInput.value ='';
+                numberInput.value ='';
 
                 if(shown)
                     contactsWrapper.innerHTML='';
@@ -221,6 +227,9 @@ let contacts = {
 
             // this.contactList.splice(removeContactIndex, 1);
             // alert('Contatto rimosso correttamente')
+            
+            // nameInput.value ='';
+            // numberInput.value ='';
 
             // if(shown)
             //     contactsWrapper.innerHTML='';
@@ -259,6 +268,9 @@ let contacts = {
                 let eliminateIndex = contacts.contactList.indexOf(dataArray[i])
                 contacts.contactList.splice(eliminateIndex, 1);
                 alert('Contatto rimosso correttamente')
+                
+                nameInput.value ='';
+                numberInput.value ='';
 
                 if(shown)
                     contactsWrapper.innerHTML='';
