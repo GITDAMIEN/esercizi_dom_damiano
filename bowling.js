@@ -20,7 +20,7 @@ let bowling = {
             let card = document.createElement('div')
             card.classList.add('col-12', 'col-md-3')
             card.innerHTML= `
-                <div class="card colored custom-card">
+                <div class="card colored custom-card winnerCard">
                     <img class="imm" src=${player.image} alt="Old man ${player.playerName}">
                     <h2>${player.playerName}</h2>
                     <p>Punteggio: <span>0</span></p>
@@ -79,7 +79,7 @@ let bowling = {
         let winnerP = document.querySelector('#winnerP')
         let winnerCard = document.querySelector('.winnerCard')
         winnerP.innerHTML = 'Vincitore!!'
-        winnerCard.style.tranform = 'scale(1.2)'
+        winnerCard.classList.add('scaleW')
     }
 }
 
